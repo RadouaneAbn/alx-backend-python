@@ -3,7 +3,7 @@
 from typing import Callable
 
 
-def make_multiplier(multiplier: float) -> Callable:
+def make_multiplier(multiplier: float) -> Callable[[float], float]:
     """
     makes a funtion that calculates the multiplication of
     multiplier and a float
