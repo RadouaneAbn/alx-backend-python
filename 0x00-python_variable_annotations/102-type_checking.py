@@ -2,6 +2,7 @@
 """ 102-type_checking.py """
 from typing import Tuple, List
 
+
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """ Zoom an array """
     zoomed_in: List = [
