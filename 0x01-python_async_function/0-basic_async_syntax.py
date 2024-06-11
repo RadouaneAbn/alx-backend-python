@@ -2,11 +2,11 @@
 """ 0-basic_async_syntax.py """
 
 import random
-from asyncio import sleep
+import asyncio
 
 
 async def wait_random(max_delay: int = 10) -> float:
     """ This function returns a  """
     wait_time = random.uniform(0, max_delay)
-    await sleep(wait_time)
+    await asyncio.sleep(wait_time)
     return wait_time
