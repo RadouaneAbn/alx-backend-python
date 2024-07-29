@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+""" This module contains unit tests for a TestGithubOrgClient class """
 import unittest
 from parameterized import parameterized
 from unittest.mock import patch
