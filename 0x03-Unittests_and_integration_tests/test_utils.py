@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """ This module contains unit tests for a access_nested_map function """
 import unittest
-from unittest.mock import patch, MagicMock
 from parameterized import parameterized
 access_nested_map = __import__("utils").access_nested_map
 get_json = __import__("utils").get_json
@@ -61,7 +60,7 @@ class TEstGetJson(unittest.TestCase):
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
-    @patch("requests.get")
+    @unittest.mock.patch("requests.get")
     def test_get_json(self, test_url, test_payload, mock_get):
         """
             Test get_json function returns the correct pyload and ensure the
@@ -76,7 +75,7 @@ class TEstGetJson(unittest.TestCase):
                 The payload returned by the mocked requests.
                 The requests.get method was called exactly once per URL.
         """
-        mock_res = MagicMock(status_code=200)
+        mock_res = unittest.mock.MagicMock()
         mock_res.json.return_value = test_payload
         mock_get.return_value = mock_res
         self.assertEqual(get_json(test_url), test_payload)
