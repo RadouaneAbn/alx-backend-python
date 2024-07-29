@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ This module contains unit tests for a TestGithubOrgClient class """
+
 from client import GithubOrgClient
 import unittest
 from parameterized import parameterized
@@ -18,5 +19,6 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         url = f"https://api.github.com/orgs/{org_name}"
         cl = GithubOrgClient(org_name)
+        cl.org()
         cl.org()
         mock_get_json.assert_called_once_with(url)
