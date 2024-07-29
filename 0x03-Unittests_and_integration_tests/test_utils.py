@@ -2,8 +2,8 @@
 """ This module contains unit tests for a access_nested_map function """
 import unittest
 from parameterized import parameterized
-access_nested_map = __import__("utils").access_nested_map
-get_json = __import__("utils").get_json
+from utils import (access_nested_map, get_json)
+from unittest.mock import patch
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestAccessNestedMap(unittest.TestCase):
         self.assertEqual(context.exception.args[0], expected)
 
 
-class TEstGetJson(unittest.TestCase):
+class TestGetJson(unittest.TestCase):
     """
         This class is a mock unittest for get_json function.
     """
@@ -60,8 +60,7 @@ class TEstGetJson(unittest.TestCase):
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
-    @unittest.mock.patch("requests.get")
-    def test_get_json(self, test_url, test_payload, mock_get):
+    def test_get_json(self, test_url, test_payload):
         """
             Test get_json function returns the correct pyload and ensure the
             get method is called only once per url.
@@ -69,14 +68,12 @@ class TEstGetJson(unittest.TestCase):
             Args:
                 test_url (str): the URL.
                 test_payload (dict): the returned dict.
-                mock_get (MagickMock): the mocked requests.get method.
 
             Asserts:
                 The payload returned by the mocked requests.
                 The requests.get method was called exactly once per URL.
         """
-        mock_res = unittest.mock.MagicMock()
-        mock_res.json.return_value = test_payload
-        mock_get.return_value = mock_res
-        self.assertEqual(get_json(test_url), test_payload)
-        mock_get.assert_called_once_with(test_url)
+        config = {'return_value.json.return_value': test_payload}
+        with patch('requests.get', **config) as mock_get:
+            self.assertEqual(get_json(test_url), test_payload)
+            mock_get.assert_called_once_with(test_url)
