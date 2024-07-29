@@ -2,7 +2,7 @@
 """ This module contains unit tests for a access_nested_map function """
 import unittest
 from parameterized import parameterized
-from utils import (access_nested_map, get_json)
+from utils import (access_nested_map, get_json, memoize)
 from unittest.mock import patch
 
 
@@ -73,7 +73,26 @@ class TestGetJson(unittest.TestCase):
                 The payload returned by the mocked requests.
                 The requests.get method was called exactly once per URL.
         """
-        config = {'return_value.json.return_value': test_payload}
-        with patch('requests.get', **config) as mock_get:
+        config = {"return_value.json.return_value": test_payload}
+        with patch("requests.get", **config) as mock_get:
             self.assertEqual(get_json(test_url), test_payload)
             mock_get.assert_called_once_with(test_url)
+
+
+class TestMemoize(unittest.TestCase):
+    """ Class for testing utils.memoize """
+    def test_memoize(self):
+        """ Test memoize class """
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        cls = TestClass()
+        with patch.object(TestClass, "a_method") as mock_a_property:
+            cls.a_property()
+            cls.a_property()
+            mock_a_property.assert_called_once()
